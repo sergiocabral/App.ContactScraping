@@ -43,6 +43,16 @@ class WebBrowser {
  */
 class Scrapping {
     /**
+     * Nome para o tipo email.
+     */
+    public const EMAIL = 'email';
+
+    /**
+     * Nome para o tipo telefone.
+     */
+    public const PHONE = 'phone';
+
+    /**
      * Main constructor.
      */
     public function __construct()
@@ -98,7 +108,20 @@ class Main {
      * Executa a aplicação.
      */
     public function run() {
-        echo "Hello World";
+        global $argc;
+        global $argv;
+
+        if ($argc < 2 ||
+            ($argv[1] !== Scrapping::PHONE &&
+            $argv[1] !== Scrapping::EMAIL)) {
+            echo "Invalid contact type. Use as parameter: " . Scrapping::EMAIL . " or " . Scrapping::PHONE;
+            die;
+        }
+
+        $type = $argv[1];
+        $context = $argv[2] ?? '';
+
+        echo "Contact type '$type' with context '$context'.";
     }
 }
 
