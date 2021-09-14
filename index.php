@@ -25,11 +25,47 @@ class FactoryUrl {
     }
 }
 
+/**
+ * Simulador de navegação pelas página na internet.
+ */
+class WebBrowser {
+    /**
+     * Carrega uma página e retorna seu código HTML.
+     * @param string $url Endereço da página.
+     * @return string Código HTML
+     */
+    public function getHtml(string $url): string {
+        return file_get_contents($url);
+    }
+}
+
+/**
+ * Ponto de entrada da aplicação.
+ */
 class Main {
 
+    /**
+     * Main constructor.
+     */
+    public function __construct()
+    {
+        $this->webBrowser = new WebBrowser();
+    }
+
+    /**
+     * Simulador de navegação pelas página na internet.
+     * @var WebBrowser
+     */
+    private WebBrowser $webBrowser;
+
+    /**
+     * Executa a aplicação.
+     */
     public function run() {
-        $url = FactoryUrl::googleSearch('pet shop');
-        echo $url;
+        $url = FactoryUrl::googleSearch('churrascaria');
+        $content = $this->webBrowser->getHtml($url);
+        file_put_contents("D:\Temp\index.html", $content);
+        echo $content;
     }
 }
 
