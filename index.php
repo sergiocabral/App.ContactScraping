@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Geral url de serviços de internet.
  */
@@ -40,10 +39,9 @@ class WebBrowser {
 }
 
 /**
- * Ponto de entrada da aplicação.
+ * Responsável por vasculhar a internet em busca de informações.
  */
-class Main {
-
+class Scrapping {
     /**
      * Main constructor.
      */
@@ -59,13 +57,48 @@ class Main {
     private WebBrowser $webBrowser;
 
     /**
+     * Retorna emails com base em um contexo de busca.
+     * @param string $context Contexto da busca.
+     * @return array Lista de emails.
+     */
+    public function getEmails(string $context = ''): array {
+        return ['Not Implemented'];
+    }
+
+    /**
+     * Retorna telefones com base em um contexo de busca.
+     * @param string $context Contexto da busca.
+     * @return array Lista de telfones.
+     */
+    public function getPhones(string $context = ''): array {
+        return ['Not Implemented'];
+    }
+}
+
+/**
+ * Ponto de entrada da aplicação.
+ */
+class Main {
+
+    /**
+     * Main constructor.
+     */
+    public function __construct()
+    {
+        $this->scrapping = new Scrapping();
+    }
+
+    /**
+     * Responsável por vasculhar a internet em busca de informações
+     * @var Scrapping
+     */
+    private Scrapping $scrapping;
+
+    /**
      * Executa a aplicação.
      */
     public function run() {
-        $url = FactoryUrl::googleSearch('churrascaria');
-        $content = $this->webBrowser->getHtml($url);
-        file_put_contents("D:\Temp\index.html", $content);
-        echo $content;
+        echo "Hello World";
     }
 }
 
