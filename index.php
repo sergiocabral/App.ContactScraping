@@ -1,4 +1,21 @@
 <?php
+
+/**
+ * Agrupa funcionalidades em geral
+ */
+class Helper {
+    /**
+     * Retorna um item aleatório da lista.
+     * @param string[] $list
+     * @return string
+     */
+    public static function getRandomItemOfList($list) {
+        $count = count($list);
+        $randomIndex = rand() % $count;
+        return $list[$randomIndex];
+    }
+}
+
 /**
  * Geral url de serviços de internet.
  */
@@ -55,11 +72,6 @@ class Scrapping {
      */
     public const PHONE = 'phone';
 
-    private $surnames = [
-        "cabral",
-
-    ];
-
     /**
      * Main constructor.
      */
@@ -75,11 +87,68 @@ class Scrapping {
     private WebBrowser $webBrowser;
 
     /**
+     * Sobrenomes aleatórios
+     * @var string[]
+     */
+    private array $surnames = [
+        "peixoto",
+        "ferreira",
+        "albuquerque",
+        "carvalho",
+        "mendonça",
+        "cardoso",
+        "gomes"
+    ];
+
+    /**
+     * Provedores de emails aleatórios
+     * @var string[]
+     */
+    private array $emailsProviders = [
+        "gmail.com",
+        "hotmail.com",
+        "ymail.com",
+        "uol.com.br",
+        "bol.com.br"
+    ];
+
+    /**
+     * Retorna um nome aleatório.
+     * @return string
+     */
+    private function randomSurname(): string {
+        return Helper::getRandomItemOfList($this->surnames);
+    }
+
+    /**
+     * Retorna um nome aleatório.
+     * @return string
+     */
+    private function randomEmailProvider(): string {
+        return Helper::getRandomItemOfList($this->emailsProviders);
+    }
+
+    /**
+     * Faz uma busca na internet e retorna o resultado.
+     * @param string $context Contexto da busca.
+     * @return string Código HTML
+     */
+    private function getSearchContent(string $context = ''): string {
+        $surname = $this->randomSurname();
+        $emailProvider = "@" . $this->randomEmailProvider();
+        $term = "$surname $emailProvider $context";
+        $page = 1;
+        $url = FactoryUrl::googleSearch($term, $page);
+        return $this->webBrowser->getHtml($url);
+    }
+
+    /**
      * Retorna emails com base em um contexo de busca.
      * @param string $context Contexto da busca.
      * @return array Lista de emails.
      */
     public function getEmails(string $context = ''): array {
+        $content = $this->getSearchContent($context);
         return ['Not Implemented'];
     }
 
@@ -89,6 +158,7 @@ class Scrapping {
      * @return array Lista de telfones.
      */
     public function getPhones(string $context = ''): array {
+        $content = $this->getSearchContent($context);
         return ['Not Implemented'];
     }
 }
