@@ -8,19 +8,22 @@ class FactoryUrl {
      * @param string $term Termo de pesquisa.
      * @return string Url montada.
      */
-    public static function googleSearch(string $term): string
+    public static function googleSearch(string $term, int $page = 1): string
     {
         $termEncoded = urlencode($term);
+        $resultsPerPage = 10;
+        $start = ($page - 1) * $resultsPerPage;
         return "https://www.google.com/search" .
-        "?q=$termEncoded" .
-        "&rlz=1C1GCEU_pt-BRBR888BR888" .
-        "&sxsrf=AOaemvIElWeAOvOD_ol-57QS-VqMOcUvDA%3A1631635328965" .
-        "&ei=gMdAYfyuOvDF5OUPpY-fqAk" .
-        "&oq=$termEncoded" .
-        "&gs_lcp=Cgdnd3Mtd2l6EAMyBAgjECcyBAgjECcyCAguEIAEELEDMgQILhBDMgsILhCABBDHARDRAzIFCAAQgAQyBQgAEIAEMggIABCABBCxAzIFCAAQgAQyBQgAEIAEOgcIABBHELADOhQILhCABBCxAxCDARDHARDRAxCTAjoLCAAQgAQQsQMQgwE6DgguEIAEELEDEMcBEKMCOgsILhCABBCxAxCDAToICAAQsQMQgwE6CAguELEDEIMBOgQIABBDOgoILhDHARDRAxBDOg4ILhCABBCxAxDHARDRAzoKCC4QsQMQgwEQQzoHCC4QsQMQQ0oECEEYAFD81DRY8to0YJTdNGgDcAJ4AIABiQGIAYgFkgEDMC41mAEAoAEByAEIuAECwAEB" .
-        "&sclient=gws-wiz" .
-        "&ved=0ahUKEwj87r2h6_7yAhXwIrkGHaXHB5UQ4dUDCA4" .
-        "&uact=5";
+            "?q=$termEncoded" .
+            "&rlz=1C1GCEU_pt-BRBR888BR888" .
+            "&sxsrf=AOaemvIi3d66ZTIuiq9Hpi4Z3H80ZnA_Yg:1632414217800" .
+            "&ei=CapMYdqEMP_T1sQPm-ufIA" .
+            "&start=$start" .
+            "&sa=N" .
+            "&ved=2ahUKEwiarc_swJXzAhX_qZUCHZv1BwQQ8tMDegQIARA8" .
+            "&biw=958" .
+            "&bih=967" .
+            "&dpr=1";
     }
 }
 
@@ -51,6 +54,11 @@ class Scrapping {
      * Nome para o tipo telefone.
      */
     public const PHONE = 'phone';
+
+    private $surnames = [
+        "cabral",
+
+    ];
 
     /**
      * Main constructor.
@@ -121,7 +129,17 @@ class Main {
         $type = $argv[1];
         $context = $argv[2] ?? '';
 
-        echo "Contact type '$type' with context '$context'.";
+        switch ($type) {
+            case Scrapping::EMAIL:
+                $result = $this->scrapping->getEmails($context);
+                break;
+            case Scrapping::PHONE:
+                $result = $this->scrapping->getPhones($context);
+                break;
+            default:
+                throw new Exception('Not implemented type for scrapping.');
+        }
+        var_dump($result);
     }
 }
 
